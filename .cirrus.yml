@@ -20,6 +20,7 @@ task:
     - echo 'function hadk() { source $HOME/.hadk.env; echo "Env setup for $DEVICE"; }' >> ~/.mersdkubu.profile
     - echo 'export PS1="HABUILD_SDK [\${DEVICE}] $PS1"' >> ~/.mersdkubu.profile
     - echo 'hadk' >> ~/.mersdkubu.profile
+    
   sfossdk_script:
     - cd ~/
     - export PLATFORM_SDK_ROOT=/srv/sailfishos
