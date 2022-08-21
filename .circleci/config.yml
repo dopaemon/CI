@@ -2,14 +2,8 @@ version: 2.1
 jobs:
   SailfishOS-Sweet:
    docker:
-      - image: dopaemon/MultiROM:latest
+      - image: dopaemon/bionic:latest
    steps:
-      - run:
-          name: Disk Info
-          no_output_timeout: 20m
-          command: |
-            lscpu
-            df -h
       - run:
           name: Create env profile
           no_output_timeout: 20m
@@ -39,5 +33,8 @@ jobs:
             sfossdk
             sudo zypper ref
             sudo zypper --non-interactive install android-tools-hadk kmod createrepo_c nano
-            
-            
+workflows:
+  version: 2.1
+  cooking:
+    jobs:
+      - SailfishOS-Sweet
