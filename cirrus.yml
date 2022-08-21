@@ -1,0 +1,35 @@
+env:
+    CIRRUS_CLONE_DEPTH: 1
+    BUILD_HOSTNAME: "CirrusCI"
+    CIRRUS_WORKING_DIR: "/home/doraemon/"
+
+task:
+  name: SailfishOS - Xiaomi Redmi Note 10 Pro
+  container:
+    image: dopaemon/bionic:latest
+    cpu: 4
+    memory: 8G
+
+  env_script:
+    - cd ~/
+    - echo 'export ANDROID_ROOT="$HOME/hadk"' >> ~/.hadk.env
+    - echo 'export VENDOR="xiaomi"' >> ~/.hadk.env
+    - echo 'export DEVICE="sweet"' >> ~/.hadk.env
+    - echo 'export PORT_ARCH="aarch64"' >> ~/.hadk.env
+    - echo 'function hadk() { source $HOME/.hadk.env; echo "Env setup for $DEVICE"; } hadk' >> ~/.mersdk.profile
+    - echo 'function hadk() { source $HOME/.hadk.env; echo "Env setup for $DEVICE"; }' >> ~/.mersdkubu.profile
+    - echo 'export PS1="HABUILD_SDK [\${DEVICE}] $PS1"' >> ~/.mersdkubu.profile
+    - echo 'hadk' >> ~/.mersdkubu.profile
+  sfossdk_script:
+    - cd ~/
+    - export PLATFORM_SDK_ROOT=/srv/sailfishos
+    - curl -k -O https://releases.sailfishos.org/sdk/installers/latest/Jolla-latest-SailfishOS_Platform_SDK_Chroot-i486.tar.bz2
+    - sudo mkdir -p $PLATFORM_SDK_ROOT/sdks/sfossdk
+    - sudo tar --numeric-owner -p -xjf Jolla-latest-SailfishOS_Platform_SDK_Chroot-i486.tar.bz2 -C $PLATFORM_SDK_ROOT/sdks/sfossdk
+    - echo "export PLATFORM_SDK_ROOT=$PLATFORM_SDK_ROOT" >> ~/.bashrc
+    - echo 'alias sfossdk=$PLATFORM_SDK_ROOT/sdks/sfossdk/sdk-chroot' >> ~/.bashrc; exec bash
+    - echo 'PS1="PlatformSDK $PS1"' > ~/.mersdk.profile
+    - echo '[ -d /etc/bash_completion.d ] && for i in /etc/bash_completion.d/*;do . $i;done' >> ~/.mersdk.profile
+    - sfossdk
+    - sudo zypper ref
+    - sudo zypper --non-interactive install android-tools-hadk kmod createrepo_c nano
