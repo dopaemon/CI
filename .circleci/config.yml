@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   SailfishOS-Sweet:
    docker:
-      - image: dopaemon/bionic:latest
+      - image: dopaemon/MultiROM:latest
    steps:
       - run:
           name: Disk Info
