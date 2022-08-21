@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  SailfishOS:
+  SailfishOS-Sweet:
    docker:
       - image: dopaemon/bionic:latest
    steps:
